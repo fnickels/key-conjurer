@@ -48,6 +48,8 @@ func init() {
 
 	rootCmd.Flags().BoolVarP(&cmdShortVersionFlag, "short-version", "s", false, "version for "+appname+" (short format)")
 	rootCmd.Flags().BoolVarP(&cmdOneLineVersionFlag, "oneline-version", "1", false, "version for "+appname+" (single line format)")
+
+	rootCmd.CompletionOptions.DisableDescriptions = false //false is the default value
 }
 
 // hack to remove the leading blank line in the --version output
@@ -74,6 +76,7 @@ var rootCmd = &cobra.Command{
 	Long: `Key Conjurer retrieves temporary credentials from the Key Conjurer API.
 
 To get started run the following commands:
+  source <(` + appname + ` completion bash) # Optional, enables commandline completion
   ` + appname + ` login # You will get prompted for your AD credentials
   ` + appname + ` accounts
   ` + appname + ` get <accountName>

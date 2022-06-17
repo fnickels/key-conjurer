@@ -33,8 +33,17 @@ This is used when a "bastion" account exists which users initially authenticate 
 This command will fail if you do not have active AWS credentials.
 `,
 	Example: "  " + appname + ` switch 123456798`,
-	Args:    cobra.ExactArgs(1),
 	Aliases: []string{"switch-account"},
+	Args:    cobra.ExactArgs(1),
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		list := []string{}
+		switch len(args) {
+		case 0:
+			// not 100% sure that this list is appropriate
+			//		list = config.HintAccounts()
+		}
+		return list, cobra.ShellCompDirectiveNoFileComp
+	},
 	RunE: func(comm *cobra.Command, args []string) error {
 		valid := false
 		for _, permitted := range permittedOutputTypes {

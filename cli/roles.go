@@ -14,6 +14,11 @@ func init() {
 var rolesCmd = cobra.Command{
 	Use:   "roles",
 	Short: "List all the roles that you can assume when using `" + appname + " get`.",
+	Args:  cobra.ExactArgs(0),
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		list := []string{}
+		return list, cobra.ShellCompDirectiveNoFileComp
+	},
 	RunE: func(*cobra.Command, []string) error {
 		switch identityProvider {
 		case keyconjurer.AuthenticationProviderOneLogin:

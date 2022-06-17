@@ -23,6 +23,10 @@ var setTTLCmd = &cobra.Command{
 	Short: "Sets ttl value in number of hours.",
 	Long:  "Sets ttl value in number of hours.",
 	Args:  cobra.ExactArgs(1),
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		list := []string{}
+		return list, cobra.ShellCompDirectiveNoFileComp
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ttl, err := strconv.ParseUint(args[0], 10, 32)
 		if err != nil {
@@ -39,6 +43,10 @@ var setTimeRemainingCmd = &cobra.Command{
 	Short: "Sets time remaining value in number of minutes.",
 	Long:  "Sets time remaining value in number of minutes. Using minutes is an artifact from when keys could only live for 1 hour.",
 	Args:  cobra.ExactArgs(1),
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		list := []string{}
+		return list, cobra.ShellCompDirectiveNoFileComp
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		timeRemaining, err := strconv.ParseUint(args[0], 10, 32)
 		if err != nil {

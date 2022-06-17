@@ -55,6 +55,11 @@ var loginCmd = &cobra.Command{
 	Short: "Authenticate with KeyConjurer.",
 	Long:  "Login using your AD creds. This stores encrypted credentials on the local system.",
 	// Example: appname + " login",
+	Args: cobra.ExactArgs(0),
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		list := []string{}
+		return list, cobra.ShellCompDirectiveNoFileComp
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx := context.Background()
 		client, err := newClient()

@@ -16,6 +16,11 @@ var accountsCmd = &cobra.Command{
 	Short: "Prints the list of accounts you have access to.",
 	Long:  "Prints the list of accounts you have access to.",
 	// Example: appname + " accounts",
+	Args: cobra.ExactArgs(0),
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		list := []string{}
+		return list, cobra.ShellCompDirectiveNoFileComp
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx := context.Background()
 		client, err := newClient()

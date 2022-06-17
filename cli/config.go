@@ -286,3 +286,16 @@ func (c *Config) UpdateAccounts(entries []Account) {
 func (c *Config) DumpAccounts(w io.Writer) {
 	c.Accounts.WriteTable(w)
 }
+
+func (c *Config) HintAccounts() []string {
+	list := []string{}
+
+	// add both formal account name and aliases to the list of valid reference
+	c.Accounts.ForEach(func(id string, acc Account, aliases []string) {
+		for _, alias := range aliases {
+			list = append(list, alias)
+		}
+	})
+
+	return list
+}

@@ -17,6 +17,10 @@ var upgradeCmd = &cobra.Command{
 	Long:  "Downloads the latest version of " + appname + ".",
 	Args:  cobra.ExactArgs(0),
 	// Example: appname + " upgrade",
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		list := []string{}
+		return list, cobra.ShellCompDirectiveNoFileComp
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		keyConjurerRcPath, err := os.Executable()
 		if err != nil {

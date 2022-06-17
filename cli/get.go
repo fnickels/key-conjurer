@@ -45,6 +45,14 @@ var getCmd = &cobra.Command{
 A role must be specified when using this command through the --role flag. You may list the roles you can assume through the roles command.`,
 	// Example: appname + " get <accountName/alias>",
 	Args: cobra.ExactArgs(1),
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		list := []string{}
+		switch len(args) {
+		case 0:
+			list = config.HintAccounts()
+		}
+		return list, cobra.ShellCompDirectiveNoFileComp
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx := context.Background()
 		client, err := newClient()

@@ -19,6 +19,11 @@ If KeyConjurer supports multiple providers, you may specify one you wish to use 
 If you do not specify an --identity-provider flag for the commands that support it (get, login, accounts) a default identity provider will be chosen for you (default: %q).
 `, defaultIdentityProvider),
 	// Example: appname + " identity-providers",
+	Args: cobra.ExactArgs(0),
+	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		list := []string{}
+		return list, cobra.ShellCompDirectiveNoFileComp
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx := context.Background()
 		client, err := newClient()
