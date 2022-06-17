@@ -21,6 +21,11 @@ func init() {
 	switchCmd.Flags().StringVarP(&outputType, "out", "o", outputTypeEnvironmentVariable, "Format to save new credentials in. Supported outputs: env, awscli")
 	switchCmd.Flags().StringVarP(&shell, "shell", "", shellTypeInfer, "If output type is env, determines which format to output credentials in - by default, the format is inferred based on the execution environment. WSL users may wish to overwrite this to `bash`")
 	switchCmd.Flags().StringVarP(&awsCliPath, "awscli", "", "~/.aws/", "Path for directory used by the aws-cli tool. Default is \"~/.aws\".")
+
+	switchCmd.RegisterFlagCompletionFunc("role-session-name", nullLookup)
+	switchCmd.RegisterFlagCompletionFunc("out", outtypeLookup)
+	switchCmd.RegisterFlagCompletionFunc("shell", nullLookup)
+	switchCmd.RegisterFlagCompletionFunc("awscli", dirLookup)
 }
 
 var switchCmd = cobra.Command{
@@ -41,6 +46,12 @@ This command will fail if you do not have active AWS credentials.
 		case 0:
 			// not 100% sure that this list is appropriate
 			//		list = config.HintAccounts()
+			// add valid flags and subcommands
+			// DISABLED until we figure out case above
+			//	list = append(list, flagHints(cmd)...)
+		default:
+			// add valid flags and subcommands
+			list = append(list, flagHints(cmd)...)
 		}
 		return list, cobra.ShellCompDirectiveNoFileComp
 	},

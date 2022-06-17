@@ -19,6 +19,8 @@ var upgradeCmd = &cobra.Command{
 	// Example: appname + " upgrade",
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		list := []string{}
+		// add valid flags and subcommands
+		list = append(list, flagHints(cmd)...)
 		return list, cobra.ShellCompDirectiveNoFileComp
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {

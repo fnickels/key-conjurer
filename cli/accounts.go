@@ -9,6 +9,8 @@ import (
 
 func init() {
 	accountsCmd.Flags().StringVar(&identityProvider, "identity-provider", defaultIdentityProvider, "The identity provider to use. Refer to `"+appname+" identity-providers` for more info.")
+
+	accountsCmd.RegisterFlagCompletionFunc("identity-provider", identityProviderLookup)
 }
 
 var accountsCmd = &cobra.Command{
@@ -19,6 +21,8 @@ var accountsCmd = &cobra.Command{
 	Args: cobra.ExactArgs(0),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		list := []string{}
+		// add valid flags and subcommands
+		list = append(list, flagHints(cmd)...)
 		return list, cobra.ShellCompDirectiveNoFileComp
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {

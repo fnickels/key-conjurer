@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/olekukonko/tablewriter"
+	"github.com/riotgames/key-conjurer/api/keyconjurer"
 	"github.com/spf13/cobra"
 )
 
@@ -22,16 +23,13 @@ If you do not specify an --identity-provider flag for the commands that support 
 	Args: cobra.ExactArgs(0),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		list := []string{}
+		// add valid flags and subcommands
+		list = append(list, flagHints(cmd)...)
 		return list, cobra.ShellCompDirectiveNoFileComp
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx := context.Background()
-		client, err := newClient()
-		if err != nil {
-			return err
-		}
 
-		providers, err := client.ListProviders(ctx, &ListProvidersOptions{})
+		providers, err := listproviders()
 		if err != nil {
 			return err
 		}
@@ -45,4 +43,22 @@ If you do not specify an --identity-provider flag for the commands that support 
 		tw.Render()
 		return nil
 	},
+}
+
+func listproviders() ([]keyconjurer.Provider, error) {
+
+	var empty []keyconjurer.Provider
+
+	ctx := context.Background()
+	client, err := newClient()
+	if err != nil {
+		return empty, err
+	}
+
+	providers, err := client.ListProviders(ctx, &ListProvidersOptions{})
+	if err != nil {
+		return empty, err
+	}
+
+	return providers, err
 }

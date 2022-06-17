@@ -35,6 +35,14 @@ func init() {
 	getCmd.Flags().StringVarP(&awsCliPath, "awscli", "", "~/.aws/", "Path for directory used by the aws-cli tool. Default is \"~/.aws\".")
 	getCmd.Flags().StringVar(&roleName, "role", "", "The name of the role to assume.")
 	getCmd.Flags().StringVar(&identityProvider, "identity-provider", defaultIdentityProvider, "The identity provider to use. Refer to `"+appname+" identity-providers` for more info.")
+
+	getCmd.RegisterFlagCompletionFunc("ttl", nullLookup)
+	getCmd.RegisterFlagCompletionFunc("time-remaining", nullLookup)
+	getCmd.RegisterFlagCompletionFunc("out", outtypeLookup)
+	getCmd.RegisterFlagCompletionFunc("shell", nullLookup)
+	getCmd.RegisterFlagCompletionFunc("awscli", nullLookup)
+	getCmd.RegisterFlagCompletionFunc("role", nullLookup)
+	getCmd.RegisterFlagCompletionFunc("identity-provider", identityProviderLookup)
 }
 
 var getCmd = &cobra.Command{
@@ -51,6 +59,10 @@ A role must be specified when using this command through the --role flag. You ma
 		case 0:
 			list = config.HintAccounts()
 		}
+
+		// add valid flags and subcommands
+		list = append(list, flagHints(cmd)...)
+
 		return list, cobra.ShellCompDirectiveNoFileComp
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {

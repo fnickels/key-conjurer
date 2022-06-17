@@ -16,6 +16,10 @@ var aliasCmd = cobra.Command{
 		case 0:
 			list = config.HintAccounts()
 		}
+
+		// add valid flags and subcommands
+		list = append(list, flagHints(cmd)...)
+
 		return list, cobra.ShellCompDirectiveNoFileComp
 	},
 	Run: func(cmd *cobra.Command, args []string) {

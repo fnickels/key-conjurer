@@ -48,6 +48,8 @@ func promptForCredentials(r io.Reader) (core.Credentials, error) {
 
 func init() {
 	loginCmd.Flags().StringVar(&identityProvider, "identity-provider", keyconjurer.AuthenticationProviderOkta, "The identity provider to use.")
+
+	loginCmd.RegisterFlagCompletionFunc("identity-provider", identityProviderLookup)
 }
 
 var loginCmd = &cobra.Command{
@@ -58,6 +60,8 @@ var loginCmd = &cobra.Command{
 	Args: cobra.ExactArgs(0),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
 		list := []string{}
+		// add valid flags and subcommands
+		list = append(list, flagHints(cmd)...)
 		return list, cobra.ShellCompDirectiveNoFileComp
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {

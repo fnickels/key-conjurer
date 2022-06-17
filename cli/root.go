@@ -31,10 +31,8 @@ var (
 )
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&keyConjurerRcPath, "keyconjurer-rc-path", "~/.keyconjurerrc", "path to .keyconjurerrc file")
-	rootCmd.PersistentFlags().StringVar(&host, "host", defaultHost, "The host of the KeyConjurer API")
-	rootCmd.PersistentFlags().BoolVar(&quiet, "quiet", false, "tells the CLI to be quiet; stdout will not contain human-readable informational messages")
 	rootCmd.SetVersionTemplate(`{{printf "%s" .Version}}`)
+
 	rootCmd.AddCommand(loginCmd)
 	rootCmd.AddCommand(accountsCmd)
 	rootCmd.AddCommand(getCmd)
@@ -46,8 +44,15 @@ func init() {
 	rootCmd.AddCommand(&unaliasCmd)
 	rootCmd.AddCommand(&rolesCmd)
 
+	rootCmd.PersistentFlags().StringVar(&keyConjurerRcPath, "keyconjurer-rc-path", "~/.keyconjurerrc", "path to .keyconjurerrc file")
+	rootCmd.PersistentFlags().StringVar(&host, "host", defaultHost, "The host of the KeyConjurer API")
+	rootCmd.PersistentFlags().BoolVar(&quiet, "quiet", false, "tells the CLI to be quiet; stdout will not contain human-readable informational messages")
+
 	rootCmd.Flags().BoolVarP(&cmdShortVersionFlag, "short-version", "s", false, "version for "+appname+" (short format)")
 	rootCmd.Flags().BoolVarP(&cmdOneLineVersionFlag, "oneline-version", "1", false, "version for "+appname+" (single line format)")
+
+	rootCmd.RegisterFlagCompletionFunc("keyconjurer-rc-path", fileLookup)
+	rootCmd.RegisterFlagCompletionFunc("host", nullLookup)
 
 	rootCmd.CompletionOptions.DisableDescriptions = false //false is the default value
 }
@@ -112,6 +117,7 @@ To get started run the following commands:
 		if cmdShortVersionFlag || cmdOneLineVersionFlag {
 			alternateVersions(cmd, cmdShortVersionFlag, cmdOneLineVersionFlag)
 		} else {
+
 			cmd.Help()
 		}
 	},

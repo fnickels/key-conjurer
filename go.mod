@@ -21,6 +21,7 @@ require (
 	github.com/sirupsen/logrus v1.6.0
 	github.com/smartystreets/goconvey v0.0.0-20190330032615-68dc04aab96a // indirect
 	github.com/spf13/cobra v1.4.0
+	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.6.1
 	github.com/valyala/fastjson v1.6.3
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897
